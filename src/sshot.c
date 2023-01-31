@@ -115,8 +115,8 @@ bool doScreenShot(uint32_t* _actionProgress) {
     updateRenderList();
 
     // We're zoomed out here
-    const int16_t drawOffX = -(p->m_pix_x - (SCREEN_PIX_X/2));
-    const int16_t drawOffY = -(p->m_pix_y - (SCREEN_PIX_Y/2));
+    const int16_t drawOffX = -(p->m_pix_x - (DEVICE_PIX_X/2));
+    const int16_t drawOffY = -(p->m_pix_y - (DEVICE_PIX_Y/2));
 
     pd->graphics->setDrawOffset(drawOffX, drawOffY);
     pd->sprite->drawSprites();

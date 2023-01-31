@@ -47,7 +47,7 @@ void addSaveLoadProgressSprite(int32_t _doneX, int32_t _ofY) {
   pd->graphics->clearBitmap(m_UIBitmapSaveLoadProgress, kColorClear);
   pd->graphics->pushContext(m_UIBitmapSaveLoadProgress);
   pd->graphics->setDrawMode(kDrawModeFillWhite);
-  pd->graphics->drawText(text, 128, kASCIIEncoding, (TILE_PIX*6-width)/2, 0);
+  pd->graphics->drawText(text, 128, kASCIIEncoding, (HTILE_PIX*6-width)/2, 0);
   pd->graphics->popContext();
   pd->sprite->addSprite(m_UISpriteSaveLoadProgress);
 }
@@ -85,8 +85,8 @@ void updateUITitles(int _fc) {
   pd->sprite->setDrawMode(m_UISpriteSplash, kDrawModeCopy);
   #ifdef TITLE_LOGO_ONLY
   pd->sprite->setVisible(m_UISpriteSplash, 1);
-  const int32_t o = 0;//round( TILE_PIX/2 * fabs( sin( 0.1f * _fc ) ) );
-  pd->sprite->moveTo(m_UISpriteSplash, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 - o - TILE_PIX );
+  const int32_t o = 0;//round( HTILE_PIX/2 * fabs( sin( 0.1f * _fc ) ) );
+  pd->sprite->moveTo(m_UISpriteSplash, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 - o - HTILE_PIX );
   pd->sprite->setVisible(m_UISpriteTitleSelected, 0);
   for (int32_t i = 0; i < 3; ++i) {
     pd->sprite->setVisible(m_UISpriteTitleNew[i], 0);
@@ -97,10 +97,10 @@ void updateUITitles(int _fc) {
 
   pd->sprite->setVisible(m_UISpriteTitleSelected, _fc % (TICK_FREQUENCY/2) < TICK_FREQUENCY/4);
   pd->sprite->moveTo(m_UISpriteTitleSelected, 
-    m_UITitleSelected*TILE_PIX*7 + (7*TILE_PIX)/2 + (m_UITitleSelected+1)*TILE_PIX, 
-    DEVICE_PIX_Y - TILE_PIX*2);
-  const int32_t offset = 0;//round( TILE_PIX/2 * fabs( sin( 0.1f * _fc ) ) );
-  pd->sprite->moveTo(m_UISpriteSplash, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 - offset - (3*TILE_PIX)/4 );
+    m_UITitleSelected*HTILE_PIX*7 + (7*HTILE_PIX)/2 + (m_UITitleSelected+1)*HTILE_PIX, 
+    DEVICE_PIX_Y - HTILE_PIX*2);
+  const int32_t offset = 0;//round( HTILE_PIX/2 * fabs( sin( 0.1f * _fc ) ) );
+  pd->sprite->moveTo(m_UISpriteSplash, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 - offset - (3*HTILE_PIX)/4 );
 }
 
 void updateUI(int _fc) {
@@ -169,32 +169,32 @@ void initiUI() {
   m_UISpriteLoad = pd->sprite->newSprite();
   m_UISpriteGen = pd->sprite->newSprite();
 
-  m_UIBitmapSave = pd->graphics->newBitmap(DEVICE_PIX_X/2, TILE_PIX*2, kColorClear);
-  m_UIBitmapSaveLoadProgress = pd->graphics->newBitmap(TILE_PIX*6, TILE_PIX*1, kColorClear);
-  m_UIBitmapGen = pd->graphics->newBitmap(DEVICE_PIX_X/2, TILE_PIX*2, kColorClear);
-  m_UIBitmapLoad = pd->graphics->newBitmap(DEVICE_PIX_X/2, TILE_PIX*2, kColorClear);
+  m_UIBitmapSave = pd->graphics->newBitmap(DEVICE_PIX_X/2, HTILE_PIX*2, kColorClear);
+  m_UIBitmapSaveLoadProgress = pd->graphics->newBitmap(HTILE_PIX*6, HTILE_PIX*1, kColorClear);
+  m_UIBitmapGen = pd->graphics->newBitmap(DEVICE_PIX_X/2, HTILE_PIX*2, kColorClear);
+  m_UIBitmapLoad = pd->graphics->newBitmap(DEVICE_PIX_X/2, HTILE_PIX*2, kColorClear);
 
-  PDRect boundTopB = {.x = 0, .y = 0, .width = SCREEN_PIX_X/2, .height = TILE_PIX*2};
-  PDRect boundSpriteSave = {.x = 0, .y = 0, .width = TILE_PIX*6, .height = TILE_PIX};
+  PDRect boundTopB = {.x = 0, .y = 0, .width = DEVICE_PIX_X/2, .height = HTILE_PIX*2};
+  PDRect boundSpriteSave = {.x = 0, .y = 0, .width = HTILE_PIX*6, .height = HTILE_PIX};
 
 
   pd->sprite->setBounds(m_UISpriteSave, boundTopB);
   pd->sprite->setImage(m_UISpriteSave, m_UIBitmapSave, kBitmapUnflipped);
   pd->sprite->moveTo(m_UISpriteSave, DEVICE_PIX_X/2, DEVICE_PIX_Y/2);
-  pd->sprite->setZIndex(m_UISpriteSave, Z_INDEX_UI_TT);
+  pd->sprite->setZIndex(m_UISpriteSave, 128);
   pd->sprite->setIgnoresDrawOffset(m_UISpriteSave, 1);
   pd->sprite->setVisible(m_UISpriteSave, 1);
 
   pd->sprite->setBounds(m_UISpriteSaveLoadProgress, boundSpriteSave);
   pd->sprite->setImage(m_UISpriteSaveLoadProgress, m_UIBitmapSaveLoadProgress, kBitmapUnflipped);
-  pd->sprite->moveTo(m_UISpriteSaveLoadProgress, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 + 2*TILE_PIX);
+  pd->sprite->moveTo(m_UISpriteSaveLoadProgress, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 + 2*HTILE_PIX);
   pd->sprite->setZIndex(m_UISpriteSaveLoadProgress, Z_INDEX_UI_TT);
   pd->sprite->setIgnoresDrawOffset(m_UISpriteSaveLoadProgress, 1);
   pd->sprite->setVisible(m_UISpriteSaveLoadProgress, 1);
 
   pd->graphics->pushContext(m_UIBitmapSave);
   pd->graphics->setLineCapStyle(kLineCapStyleRound);
-  pd->graphics->drawLine(TILE_PIX, TILE_PIX, DEVICE_PIX_X/2 - TILE_PIX, TILE_PIX, TILE_PIX*2, kColorWhite);
+  pd->graphics->drawLine(HTILE_PIX, HTILE_PIX, DEVICE_PIX_X/2 - HTILE_PIX, HTILE_PIX, HTILE_PIX*2, kColorWhite);
   pd->graphics->setDrawMode(kDrawModeFillBlack);
   setRoobert24();
   int32_t tlen = pd->graphics->getTextWidth(getRoobert24(), "SAVING", 16, kASCIIEncoding, 0);
@@ -210,7 +210,7 @@ void initiUI() {
 
   pd->graphics->pushContext(m_UIBitmapGen);
   pd->graphics->setLineCapStyle(kLineCapStyleRound);
-  pd->graphics->drawLine(TILE_PIX, TILE_PIX, DEVICE_PIX_X/2 - TILE_PIX, TILE_PIX, TILE_PIX*2, kColorWhite);
+  pd->graphics->drawLine(HTILE_PIX, HTILE_PIX, DEVICE_PIX_X/2 - HTILE_PIX, HTILE_PIX, HTILE_PIX*2, kColorWhite);
   pd->graphics->setDrawMode(kDrawModeFillBlack);
   setRoobert24();
   tlen = pd->graphics->getTextWidth(getRoobert24(), "GENERATING", 16, kASCIIEncoding, 0);
@@ -226,7 +226,7 @@ void initiUI() {
 
   pd->graphics->pushContext(m_UIBitmapLoad);
   pd->graphics->setLineCapStyle(kLineCapStyleRound);
-  pd->graphics->drawLine(TILE_PIX, TILE_PIX, DEVICE_PIX_X/2 - TILE_PIX, TILE_PIX, TILE_PIX*2, kColorWhite);
+  pd->graphics->drawLine(HTILE_PIX, HTILE_PIX, DEVICE_PIX_X/2 - HTILE_PIX, HTILE_PIX, HTILE_PIX*2, kColorWhite);
   pd->graphics->setDrawMode(kDrawModeFillBlack);
   setRoobert24();
   tlen = pd->graphics->getTextWidth(getRoobert24(), "LOADING", 16, kASCIIEncoding, 0);
@@ -237,9 +237,9 @@ void initiUI() {
 
   // Setup menu screens
 
-  PDRect splashBound = {.x = 0, .y = 0, .width = TILE_PIX*8, .height = TILE_PIX*8};
+  PDRect splashBound = {.x = 0, .y = 0, .width = HTILE_PIX*8, .height = HTILE_PIX*8};
   PDRect deviceBound = {.x = 0, .y = 0, .width = DEVICE_PIX_X, .height = DEVICE_PIX_Y};
-  PDRect buttonBound = {.x = 0, .y = 0, .width = TILE_PIX*7, .height = TILE_PIX};
+  PDRect buttonBound = {.x = 0, .y = 0, .width = HTILE_PIX*7, .height = HTILE_PIX};
 
   // Titles
 
@@ -250,58 +250,58 @@ void initiUI() {
   pd->sprite->setIgnoresDrawOffset(m_UISpriteSplash, 1);  
   pd->sprite->moveTo(m_UISpriteSplash, DEVICE_PIX_X/2, DEVICE_PIX_Y/2);
 
-  m_UIBitmapTitleVersion = pd->graphics->newBitmap(TILE_PIX*2, TILE_PIX*1, kColorWhite);
+  m_UIBitmapTitleVersion = pd->graphics->newBitmap(HTILE_PIX*2, HTILE_PIX*1, kColorWhite);
   pd->graphics->pushContext(m_UIBitmapTitleVersion);
   setRoobert10();
   int32_t width = pd->graphics->getTextWidth(getRoobert10(), VERSION, 5, kASCIIEncoding, 0);
-  pd->graphics->drawText(VERSION, 5, kASCIIEncoding, TILE_PIX - width/2, 0);
+  pd->graphics->drawText(VERSION, 5, kASCIIEncoding, HTILE_PIX - width/2, 0);
   pd->graphics->popContext();
   m_UISpriteTitleVersion = pd->sprite->newSprite();
-  PDRect vBound = {.x = 0, .y = 0, .width = TILE_PIX*2, .height = TILE_PIX*1};
+  PDRect vBound = {.x = 0, .y = 0, .width = HTILE_PIX*2, .height = HTILE_PIX*1};
   pd->sprite->setBounds(m_UISpriteTitleVersion, buttonBound);
   pd->sprite->setImage(m_UISpriteTitleVersion, m_UIBitmapTitleVersion, kBitmapUnflipped);
   pd->sprite->setZIndex(m_UISpriteTitleVersion, Z_INDEX_UI_T);
   pd->sprite->setIgnoresDrawOffset(m_UISpriteTitleVersion, 1);
-  pd->sprite->moveTo(m_UISpriteTitleVersion, 6*TILE_PIX, TILE_PIX/2);
+  pd->sprite->moveTo(m_UISpriteTitleVersion, 6*HTILE_PIX, HTILE_PIX/2);
 
   m_UISpriteTitleSelected = pd->sprite->newSprite();
   pd->sprite->setBounds(m_UISpriteTitleSelected, buttonBound);
   pd->sprite->setImage(m_UISpriteTitleSelected, getTitleSelectedBitmap(), kBitmapUnflipped);
   pd->sprite->setZIndex(m_UISpriteTitleSelected, Z_INDEX_UI_M);
   pd->sprite->setIgnoresDrawOffset(m_UISpriteTitleSelected, 1);  
-  pd->sprite->moveTo(m_UISpriteTitleSelected, (7*TILE_PIX)/2 + TILE_PIX, DEVICE_PIX_Y + TILE_PIX/2);
+  pd->sprite->moveTo(m_UISpriteTitleSelected, (7*HTILE_PIX)/2 + HTILE_PIX, DEVICE_PIX_Y + HTILE_PIX/2);
 
   setRoobert10();
   for (int32_t i = 0; i < 3; ++i) {
-    m_UIBitmapTitleNew[i] = pd->graphics->newBitmap(TILE_PIX*7, TILE_PIX*1, kColorClear);
+    m_UIBitmapTitleNew[i] = pd->graphics->newBitmap(HTILE_PIX*7, HTILE_PIX*1, kColorClear);
     m_UISpriteTitleNew[i] = pd->sprite->newSprite();
     pd->sprite->setBounds(m_UISpriteTitleNew[i], buttonBound);
     pd->sprite->setImage(m_UISpriteTitleNew[i], m_UIBitmapTitleNew[i], kBitmapUnflipped);
     pd->sprite->setZIndex(m_UISpriteTitleNew[i], Z_INDEX_UI_M);
     pd->sprite->setIgnoresDrawOffset(m_UISpriteTitleNew[i], 1);  
-    pd->sprite->moveTo(m_UISpriteTitleNew[i], i*TILE_PIX*7 + (7*TILE_PIX)/2 + (i+1)*TILE_PIX, DEVICE_PIX_Y - 2*TILE_PIX);
+    pd->sprite->moveTo(m_UISpriteTitleNew[i], i*HTILE_PIX*7 + (7*HTILE_PIX)/2 + (i+1)*HTILE_PIX, DEVICE_PIX_Y - 2*HTILE_PIX);
     
-    m_UIBitmapTitleCont[i] = pd->graphics->newBitmap(TILE_PIX*7, TILE_PIX*1, kColorClear);
+    m_UIBitmapTitleCont[i] = pd->graphics->newBitmap(HTILE_PIX*7, HTILE_PIX*1, kColorClear);
     m_UISpriteTitleCont[i] = pd->sprite->newSprite();
     pd->sprite->setBounds(m_UISpriteTitleCont[i], buttonBound);
     pd->sprite->setImage(m_UISpriteTitleCont[i], m_UIBitmapTitleCont[i], kBitmapUnflipped);
     pd->sprite->setZIndex(m_UISpriteTitleCont[i], Z_INDEX_UI_M);
     pd->sprite->setIgnoresDrawOffset(m_UISpriteTitleCont[i], 1);  
-    pd->sprite->moveTo(m_UISpriteTitleCont[i], i*TILE_PIX*7 + (7*TILE_PIX)/2 + (i+1)*TILE_PIX, DEVICE_PIX_Y - 2*TILE_PIX);
+    pd->sprite->moveTo(m_UISpriteTitleCont[i], i*HTILE_PIX*7 + (7*HTILE_PIX)/2 + (i+1)*HTILE_PIX, DEVICE_PIX_Y - 2*HTILE_PIX);
 
     pd->graphics->pushContext(m_UIBitmapTitleNew[i]);
-    roundedRect(0, TILE_PIX*7, TILE_PIX*1, TILE_PIX/2, kColorBlack);
+    roundedRect(0, HTILE_PIX*7, HTILE_PIX*1, HTILE_PIX/2, kColorBlack);
     pd->graphics->setDrawMode(kDrawModeFillWhite);
     char text[32];
     snprintf(text, 32, "New Game");
     int16_t len = strlen(text);
     int32_t width = pd->graphics->getTextWidth(getRoobert10(), text, len, kASCIIEncoding, 0);
-    pd->graphics->drawText(text, len, kASCIIEncoding, (7*TILE_PIX)/2 - width/2, 0);
+    pd->graphics->drawText(text, len, kASCIIEncoding, (7*HTILE_PIX)/2 - width/2, 0);
     pd->graphics->setDrawMode(kDrawModeCopy);
     pd->graphics->popContext();
 
     pd->graphics->pushContext(m_UIBitmapTitleCont[i]);
-    roundedRect(0, TILE_PIX*7, TILE_PIX*1, TILE_PIX/2, kColorBlack);
+    roundedRect(0, HTILE_PIX*7, HTILE_PIX*1, HTILE_PIX/2, kColorBlack);
     pd->graphics->setDrawMode(kDrawModeFillWhite);
     #ifdef DEMO
     snprintf(text, 32, "Load Demo");
@@ -310,7 +310,7 @@ void initiUI() {
     #endif
     len = strlen(text);
     width = pd->graphics->getTextWidth(getRoobert10(), text, len, kASCIIEncoding, 0);
-    pd->graphics->drawText(text, len, kASCIIEncoding, (7*TILE_PIX)/2 - width/2, 0);
+    pd->graphics->drawText(text, len, kASCIIEncoding, (7*HTILE_PIX)/2 - width/2, 0);
     pd->graphics->setDrawMode(kDrawModeCopy);
     pd->graphics->popContext();
   }

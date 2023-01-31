@@ -32,21 +32,21 @@ void render() {
     pd->display->setOffset(0, 0);
   }
 
-  const float offX = -(p->m_pix_x - (SCREEN_PIX_X/2));
-  const float offY = -(p->m_pix_y - (SCREEN_PIX_Y/2));
+  const float offX = -(p->m_pix_x - (DEVICE_PIX_X/2));
+  const float offY = -(p->m_pix_y - (DEVICE_PIX_Y/2));
 
   pd->graphics->setDrawMode(kDrawModeCopy);
   pd->graphics->setDrawOffset(offX, offY);
 
   // Still update on UI update frames to prevent tearing of UI
-  if ((getFrameCount() + TICK_OFFSET_SPRITELIST) % FAR_TICK_FREQUENCY == 0) {
+  if (getFrameCount() % 16 == 0) {
     pd->sprite->updateAndDrawSprites();
   } else {
     pd->sprite->drawSprites();
   }
 
   // Draw FPS indicator (dbg only)
-  #ifdef DEBUG
+  #ifdef DEV
   if (true || ALWAYS_FPS) {
     pd->system->drawFPS(0, 0);
   }
@@ -60,20 +60,20 @@ bool checkBound(LCDSprite* _s, uint16_t _hw, uint16_t _hh, int16_t _sX, int16_t 
   // pd->system->logToConsole(" -- -- -- sprite is at: %i %i, it has hw, hh:%i %i, x_i, y_i, _hw, _hh);
   // pd->system->logToConsole(" -- -- screen is at: %i %i", _sX, _sY);
   // pd->system->logToConsole(" -- -- bounds are: < %i  ^ %i > %i v %i ", 
-  //   -(HALF_SCREEN_PIX_X),
-  //   -(HALF_SCREEN_PIX_Y),
-  //   HALF_SCREEN_PIX_X,
-  //   HALF_SCREEN_PIX_Y);
-  // pd->system->logToConsole(" -- veto if x %i <  %i - %s", (x_i + _hw - _sX), -(HALF_SCREEN_PIX_X), x_i + _hw - _sX < -(HALF_SCREEN_PIX_X) ? "VETO" : "OK");
-  // pd->system->logToConsole(" -- veto if x %i >= %i - %s", (x_i - _hw - _sX), (HALF_SCREEN_PIX_X),  x_i - _hw - _sX >= (HALF_SCREEN_PIX_X) ? "VETO" : "OK");
-  // pd->system->logToConsole(" -- veto if y %i <  %i - %s", (y_i + _hh - _sY), -(HALF_SCREEN_PIX_Y), y_i + _hh - _sY < -(HALF_SCREEN_PIX_Y) ? "VETO" : "OK");
-  // pd->system->logToConsole(" -- veto if y %i >= %i - %s", (y_i - _hh - _sY), (HALF_SCREEN_PIX_Y),  y_i - _hh - _sY >= (HALF_SCREEN_PIX_Y) ? "VETO" : "OK");
+  //   -(HALF_DEVICE_PIX_X),
+  //   -(HALF_DEVICE_PIX_Y),
+  //   HALF_DEVICE_PIX_X,
+  //   HALF_DEVICE_PIX_Y);
+  // pd->system->logToConsole(" -- veto if x %i <  %i - %s", (x_i + _hw - _sX), -(HALF_DEVICE_PIX_X), x_i + _hw - _sX < -(HALF_DEVICE_PIX_X) ? "VETO" : "OK");
+  // pd->system->logToConsole(" -- veto if x %i >= %i - %s", (x_i - _hw - _sX), (HALF_DEVICE_PIX_X),  x_i - _hw - _sX >= (HALF_DEVICE_PIX_X) ? "VETO" : "OK");
+  // pd->system->logToConsole(" -- veto if y %i <  %i - %s", (y_i + _hh - _sY), -(HALF_DEVICE_PIX_Y), y_i + _hh - _sY < -(HALF_DEVICE_PIX_Y) ? "VETO" : "OK");
+  // pd->system->logToConsole(" -- veto if y %i >= %i - %s", (y_i - _hh - _sY), (HALF_DEVICE_PIX_Y),  y_i - _hh - _sY >= (HALF_DEVICE_PIX_Y) ? "VETO" : "OK");
 
-  if (x_i + _hw - _sX < -(HALF_SCREEN_PIX_X)) return false;// { pd->system->logToConsole(" - V0"); return false; }
-  if (x_i - _hw - _sX >= HALF_SCREEN_PIX_X) return false;//{ pd->system->logToConsole(" - V1"); return false; }
+  if (x_i + _hw - _sX < -(HALF_DEVICE_PIX_X)) return false;// { pd->system->logToConsole(" - V0"); return false; }
+  if (x_i - _hw - _sX >= HALF_DEVICE_PIX_X) return false;//{ pd->system->logToConsole(" - V1"); return false; }
   //
-  if (y_i + _hh - _sY < -(HALF_SCREEN_PIX_Y)) return false;//{ pd->system->logToConsole(" - V2"); return false; }
-  if (y_i - _hh - _sY >= HALF_SCREEN_PIX_Y) return false;//{ pd->system->logToConsole(" - V3"); return false; }
+  if (y_i + _hh - _sY < -(HALF_DEVICE_PIX_Y)) return false;//{ pd->system->logToConsole(" - V2"); return false; }
+  if (y_i - _hh - _sY >= HALF_DEVICE_PIX_Y) return false;//{ pd->system->logToConsole(" - V3"); return false; }
   //pd->system->logToConsole(" - OK");
   return true;
 }

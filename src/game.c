@@ -54,7 +54,7 @@ int gameLoop(void* _data) {
     movePlayer(/*forceUpdate*/ false);
   }
 
-  if((m_frameCount + TICK_OFFSET_SPRITELIST) % SCREENUPDATE_TICK_FREQUENCY == 0) {
+  if(m_frameCount % 8 == 0) {
     updateRenderList();
   }
 

@@ -162,16 +162,6 @@ void renderChunkBackgroundImage(struct Chunk_t* _chunk) {
 }
 
 
-bool isGroundTile(struct Tile_t* _tile) {
-  return _tile->m_tile < TOT_FLOOR_TILES_INC_PAVED;
-}
-
-bool isSoilTile(struct Tile_t* _tile) {
-  return _tile->m_tile < TOT_FLOOR_TILES;
-}
-
-
-
 void generateSpriteSetup(struct Chunk_t* _chunk) {
   if (_chunk->m_bkgImage == NULL) _chunk->m_bkgImage = pd->graphics->newBitmap(CHUNK_PIX_X, CHUNK_PIX_Y, kColorClear);
   if (_chunk->m_bkgSprite == NULL) _chunk->m_bkgSprite = pd->sprite->newSprite();

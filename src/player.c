@@ -223,7 +223,7 @@ void resetPlayer() {
   m_player.m_animID = 0;
   m_player.m_pix_x = 0;
   m_player.m_pix_y = 0;
-  setPlayerPosition((TOT_WORLD_PIX_X/2) + SCREEN_PIX_X/4, (TOT_WORLD_PIX_Y/2) + (3*SCREEN_PIX_Y)/4, /*update current location = */ true);
+  setPlayerPosition((TOT_WORLD_PIX_X/2) + DEVICE_PIX_X/4, (TOT_WORLD_PIX_Y/2) + (3*DEVICE_PIX_Y)/4, /*update current location = */ true);
   m_facing = 0;
   m_wasFacing = 0;
   m_stepCounter = 0;
