@@ -5,6 +5,7 @@
 #include "game.h"
 #include "sprite.h"
 #include "generate.h"
+#include "enemy.h"
 #include "sound.h"
 #include "location.h"
 #include "chunk.h"
@@ -25,6 +26,7 @@ static void init(void) {
   initiUI();
   initSound();
   initGame();
+  initEnemies();
 
   scanSlots();
 

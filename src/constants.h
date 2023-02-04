@@ -35,6 +35,9 @@
 #define TILES_PER_CHUNK_Y 4
 #define TILES_PER_CHUNK (TILES_PER_CHUNK_X*TILES_PER_CHUNK_Y)
 
+#define SPAWN_X 9
+#define SPAWN_Y 6
+
 #define CHUNK_PIX_X (TILE_PIX * TILES_PER_CHUNK_X)
 #define CHUNK_PIX_Y (TILE_PIX * TILES_PER_CHUNK_Y)
 
@@ -79,11 +82,15 @@
 #define Z_INDEX_UI_BBB 32761
 #define Z_INDEX_UI_BACK 32760
 
+#define Z_INDEX_BACKGROUND -1
+#define Z_INDEX_PLAYER 16000
 
-#define Z_INDEX_PLAYER 32
+#define FLAG_PLAYER 0
+#define FLAG_ENEMY 1
+#define FLAG_PROJECTILE 2
 
 // Shrink the collision boxes from the edge of the sprite, feels better
-#define COLLISION_OFFSET_BIG TILE_PIX
+#define COFF32 4
 #define COLLISION_OFFSET_SMALL (TILE_PIX/2 + 2)
 
 #define N_MUSIC_TRACKS 5
@@ -95,3 +102,5 @@
 #define VERSION "v0.1"
 
 #define FLOOR_VARIETIES 8
+
+#define MAX_ENEMIES 128

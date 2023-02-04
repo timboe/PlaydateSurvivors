@@ -10,6 +10,7 @@
 #include "input.h"
 #include "ui.h"
 #include "io.h"
+#include "enemy.h"
 
 PlaydateAPI* pd = NULL;
 
@@ -52,6 +53,16 @@ int gameLoop(void* _data) {
 
   if (gm < kTitles) {
     movePlayer(/*forceUpdate*/ false);
+
+    if (getFrameCount() % 2 == 0) {
+      //doWeapons();
+      // Update UI
+      pd->sprite->updateAndDrawSprites();
+    } else {
+      tickEnemies();
+      pd->sprite->drawSprites();
+    }
+
   }
 
   if(m_frameCount % 8 == 0) {
@@ -81,6 +92,7 @@ void reset(bool _resetThePlayer) {
   resetLocation();
   resetChunk();
   resetWorld();
+  resetEnemies();
   if (_resetThePlayer) {
     resetPlayer();
     resetUI();

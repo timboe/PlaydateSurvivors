@@ -8,8 +8,8 @@ struct Player_t{
   // Persistent
   uint8_t m_saveFormat;
 
-  float m_pix_x; // Note: Centre
-  float m_pix_y;
+  float m_x; // Note: Centre, in pix
+  float m_y;
 
   uint32_t m_saveTime;
   uint32_t m_playTime;
@@ -31,8 +31,6 @@ struct Chunk_t* getCurrentChunk(void);
 struct Location_t* getPlayerLocation(void);
 
 void setPlayerPosition(uint16_t _x, uint16_t _y, bool _updateCurrentLocation);
-
-bool tutorialEnabled(void);
 
 void movePlayer(bool _forceUpdate);
 

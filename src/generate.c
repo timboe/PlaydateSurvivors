@@ -163,13 +163,15 @@ void renderChunkBackgroundImage(struct Chunk_t* _chunk) {
 
 
 void generateSpriteSetup(struct Chunk_t* _chunk) {
-  if (_chunk->m_bkgImage == NULL) _chunk->m_bkgImage = pd->graphics->newBitmap(CHUNK_PIX_X, CHUNK_PIX_Y, kColorClear);
+  if (_chunk->m_bkgImage == NULL) _chunk->m_bkgImage = pd->graphics->newBitmap(CHUNK_PIX_X, CHUNK_PIX_Y, kColorWhite);
   if (_chunk->m_bkgSprite == NULL) _chunk->m_bkgSprite = pd->sprite->newSprite();
   PDRect bound = {.x = 0, .y = 0, .width = CHUNK_PIX_X, .height = CHUNK_PIX_Y};
   pd->sprite->setBounds(_chunk->m_bkgSprite, bound);
   pd->sprite->setImage(_chunk->m_bkgSprite, _chunk->m_bkgImage, kBitmapUnflipped);
   pd->sprite->moveTo(_chunk->m_bkgSprite, (CHUNK_PIX_X*_chunk->m_x + CHUNK_PIX_X/2.0), (CHUNK_PIX_Y*_chunk->m_y + CHUNK_PIX_Y/2.0));
-  pd->sprite->setZIndex(_chunk->m_bkgSprite, -1);
+  pd->sprite->setZIndex(_chunk->m_bkgSprite, Z_INDEX_BACKGROUND);
+  pd->sprite->setOpaque(_chunk->m_bkgSprite, true);
+  pd->sprite->setCollisionsEnabled(_chunk->m_bkgSprite, false);
 }
 
 void setChunkBackgrounds(bool _forTitles) {

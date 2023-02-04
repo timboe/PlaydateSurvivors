@@ -55,7 +55,7 @@ void setPlayerPosition(uint16_t _x, uint16_t _y, bool _updateCurrentLocation) {
   updatePlayerPosition();
   if (_updateCurrentLocation) {
     m_currentChunk = computeCurrentChunk();
-    m_currentLocation = getLocation(m_player.m_pix_x / TILE_PIX, m_player.m_pix_y / TILE_PIX);
+    m_currentLocation = getLocation(m_player.m_x / TILE_PIX, m_player.m_y / TILE_PIX);
     // DON'T setTorus here (not 100% why, but it breaks building hitboxes)
     #ifdef DEV
     pd->system->logToConsole("CHUNKCHANGE (set) C:%i %i", m_currentChunk->m_x, m_currentChunk->m_y);
@@ -68,20 +68,20 @@ void setPlayerPosition(uint16_t _x, uint16_t _y, bool _updateCurrentLocation) {
 
 void movePlayerPosition(float _goalX, float _goalY) {
   int len;
-  SpriteCollisionInfo* collInfo = pd->sprite->moveWithCollisions(m_player.m_sprite, _goalX, _goalY, &(m_player.m_pix_x), &(m_player.m_pix_y), &len);
+  SpriteCollisionInfo* collInfo = pd->sprite->moveWithCollisions(m_player.m_sprite, _goalX, _goalY, &(m_player.m_x), &(m_player.m_y), &len);
   if (len) pd->system->realloc(collInfo, 0); // Free
   updatePlayerPosition();
 }
 
 void updatePlayerPosition() {
-  pd->sprite->getPosition(m_player.m_sprite, &(m_player.m_pix_x), &(m_player.m_pix_y));
-  //pd->system->logToConsole("P@ %f %f", m_player.m_pix_x , m_player.m_pix_y);
+  pd->sprite->getPosition(m_player.m_sprite, &(m_player.m_x), &(m_player.m_y));
+  //pd->system->logToConsole("P@ %f %f", m_player.m_x , m_player.m_y);
 }
 
 
 struct Chunk_t* computeCurrentChunk() {
-  int16_t cX = (int16_t)m_player.m_pix_x / CHUNK_PIX_X;
-  int16_t cY = (int16_t)m_player.m_pix_y / CHUNK_PIX_Y; 
+  int16_t cX = (int16_t)m_player.m_x / CHUNK_PIX_X;
+  int16_t cY = (int16_t)m_player.m_y / CHUNK_PIX_Y; 
   return getChunk(cX, cY);
 }
 
@@ -89,18 +89,18 @@ struct Chunk_t* computeCurrentChunk() {
 void checkTorus() {
   // Torus splitting
   bool torusChanged = false;
-  if (m_top && m_player.m_pix_y > TOT_WORLD_PIX_Y/2) {
+  if (m_top && m_player.m_y > TOT_WORLD_PIX_Y/2) {
     m_top = false;
     torusChanged = true;
-  } else if (!m_top && m_player.m_pix_y <= TOT_WORLD_PIX_Y/2) {
+  } else if (!m_top && m_player.m_y <= TOT_WORLD_PIX_Y/2) {
     m_top = true;
     torusChanged = true;
   }
 
-  if (m_left && m_player.m_pix_x > TOT_WORLD_PIX_X/2) {
+  if (m_left && m_player.m_x > TOT_WORLD_PIX_X/2) {
     m_left = false;
     torusChanged = true;
-  } else if (!m_left && m_player.m_pix_x <= TOT_WORLD_PIX_X/2) {
+  } else if (!m_left && m_player.m_x <= TOT_WORLD_PIX_X/2) {
     m_left = true;
     torusChanged = true;
   }
@@ -114,8 +114,8 @@ void checkTorus() {
 void movePlayer(bool _forceUpdate) {
 
   //updatePlayerPosition();
-  float goalX = m_player.m_pix_x;
-  float goalY = m_player.m_pix_y;
+  float goalX = m_player.m_x;
+  float goalY = m_player.m_y;
 
   float acc = PLAYER_A;
   float fric = PLAYER_FRIC;
@@ -171,16 +171,16 @@ void movePlayer(bool _forceUpdate) {
   movePlayerPosition(goalX, goalY);
 
   // Don#t need to update position as the code below will pick up on this
-  if (m_player.m_pix_x > TOT_WORLD_PIX_X) {
-    setPlayerPosition(m_player.m_pix_x - TOT_WORLD_PIX_X, m_player.m_pix_y, /*update current location = */ false);
-  } else if (m_player.m_pix_x < 0) {
-    setPlayerPosition(m_player.m_pix_x + TOT_WORLD_PIX_X, m_player.m_pix_y, /*update current location = */ false);
+  if (m_player.m_x > TOT_WORLD_PIX_X) {
+    setPlayerPosition(m_player.m_x - TOT_WORLD_PIX_X, m_player.m_y, /*update current location = */ false);
+  } else if (m_player.m_x < 0) {
+    setPlayerPosition(m_player.m_x + TOT_WORLD_PIX_X, m_player.m_y, /*update current location = */ false);
   }
 
-  if (m_player.m_pix_y > TOT_WORLD_PIX_Y) {
-    setPlayerPosition(m_player.m_pix_x, m_player.m_pix_y - TOT_WORLD_PIX_Y, /*update current location = */ false);
-  } else if (m_player.m_pix_y < 0) {
-    setPlayerPosition(m_player.m_pix_x, m_player.m_pix_y + TOT_WORLD_PIX_Y, /*update current location = */ false);
+  if (m_player.m_y > TOT_WORLD_PIX_Y) {
+    setPlayerPosition(m_player.m_x, m_player.m_y - TOT_WORLD_PIX_Y, /*update current location = */ false);
+  } else if (m_player.m_y < 0) {
+    setPlayerPosition(m_player.m_x, m_player.m_y + TOT_WORLD_PIX_Y, /*update current location = */ false);
   }
 
   // Check chunk change
@@ -195,12 +195,12 @@ void movePlayer(bool _forceUpdate) {
   }
 
   struct Location_t* wasAt = m_currentLocation;
-  m_currentLocation = getLocation(m_player.m_pix_x / TILE_PIX, m_player.m_pix_y / TILE_PIX);
+  m_currentLocation = getLocation(m_player.m_x / TILE_PIX, m_player.m_y / TILE_PIX);
 
 }
 
 SpriteCollisionResponseType playerLCDSpriteCollisionFilterProc(LCDSprite* _player, LCDSprite* _other) {
-  return kCollisionTypeSlide;
+  return kCollisionTypeOverlap;
 }
 
 void playerSpriteSetup() {
@@ -211,6 +211,7 @@ void playerSpriteSetup() {
     pd->sprite->setImage(m_player.m_sprite, getSprite36(0, 3), kBitmapUnflipped);
     pd->sprite->setCollideRect(m_player.m_sprite, cBound);
     pd->sprite->setCollisionResponseFunction(m_player.m_sprite, playerLCDSpriteCollisionFilterProc);
+    pd->sprite->setUserdata(m_player.m_sprite, (void*) FLAG_PLAYER);
     pd->sprite->setZIndex(m_player.m_sprite, Z_INDEX_PLAYER);
 
 }
@@ -221,8 +222,8 @@ void resetPlayer() {
   m_player.m_saveTime = pd->system->getSecondsSinceEpoch(NULL);
   m_player.m_playTime = 0;
   m_player.m_animID = 0;
-  m_player.m_pix_x = 0;
-  m_player.m_pix_y = 0;
+  m_player.m_x = 0;
+  m_player.m_y = 0;
   setPlayerPosition((TOT_WORLD_PIX_X/2) + DEVICE_PIX_X/4, (TOT_WORLD_PIX_Y/2) + (3*DEVICE_PIX_Y)/4, /*update current location = */ true);
   m_facing = 0;
   m_wasFacing = 0;
@@ -251,9 +252,9 @@ void serialisePlayer(struct json_encoder* je) {
   // je->addTableMember(je, "sf", 2); // Save format
   // je->writeInt(je, CURRENT_SAVE_FORMAT);
   // je->addTableMember(je, "x", 1);
-  // je->writeInt(je, (int) m_player.m_pix_x);
+  // je->writeInt(je, (int) m_player.m_x);
   // je->addTableMember(je, "y", 1);
-  // je->writeInt(je, (int) m_player.m_pix_y);
+  // je->writeInt(je, (int) m_player.m_y);
   // je->addTableMember(je, "m", 1);
   // je->writeInt(je, m_player.m_money);
   // je->addTableMember(je, "mhwm", 4);
@@ -403,9 +404,9 @@ void didDecodeTableValuePlayer(json_decoder* jd, const char* _key, json_value _v
   // if (strcmp(_key, "sf") == 0) {
   //   m_player.m_saveFormat = json_intValue(_value);
   // } else if (strcmp(_key, "x") == 0) {
-  //   m_player.m_pix_x = (float) json_intValue(_value);
+  //   m_player.m_x = (float) json_intValue(_value);
   // } else if (strcmp(_key, "y") == 0) {
-  //   m_player.m_pix_y = json_intValue(_value);
+  //   m_player.m_y = json_intValue(_value);
   // } else if (strcmp(_key, "m") == 0) {
   //   m_player.m_money = json_intValue(_value);
   // } else if (strcmp(_key, "mhwm") == 0) {
@@ -525,13 +526,13 @@ void deserialiseArrayValuePlayer(json_decoder* jd, int _pos, json_value _value) 
 }
 
 void* deserialiseStructDonePlayer(json_decoder* jd, const char* _name, json_value_type _type) {
-  // setPlayerPosition(m_player.m_pix_x, m_player.m_pix_y, /*update current location = */ true);
-  // m_player.m_camera_pix_x = m_player.m_pix_x;
-  // m_player.m_camera_pix_y = m_player.m_pix_y;
+  // setPlayerPosition(m_player.m_x, m_player.m_y, /*update current location = */ true);
+  // m_player.m_camera_pix_x = m_player.m_x;
+  // m_player.m_camera_pix_y = m_player.m_y;
 
   // #ifdef DEV
   // pd->system->logToConsole("-- Player decoded to (%i, %i), current location (%i, %i), money:%i, unlock:%i", 
-  //   (int32_t)m_player.m_pix_x, (int32_t)m_player.m_pix_y, m_currentLocation->m_x, m_currentLocation->m_y, m_player.m_money, m_player.m_buildingsUnlockedTo);
+  //   (int32_t)m_player.m_x, (int32_t)m_player.m_y, m_currentLocation->m_x, m_currentLocation->m_y, m_player.m_money, m_player.m_buildingsUnlockedTo);
   // #endif
 
   // #ifdef DEMO

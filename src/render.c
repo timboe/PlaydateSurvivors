@@ -7,6 +7,7 @@
 #include "io.h"
 #include "input.h"
 #include "ui.h"
+#include "enemy.h"
 
 float m_trauma = 0.0f, m_decay = 0.0f;
 
@@ -32,18 +33,11 @@ void render() {
     pd->display->setOffset(0, 0);
   }
 
-  const float offX = -(p->m_pix_x - (DEVICE_PIX_X/2));
-  const float offY = -(p->m_pix_y - (DEVICE_PIX_Y/2));
+  const float offX = -(p->m_x - (DEVICE_PIX_X/2));
+  const float offY = -(p->m_y - (DEVICE_PIX_Y/2));
 
   pd->graphics->setDrawMode(kDrawModeCopy);
   pd->graphics->setDrawOffset(offX, offY);
-
-  // Still update on UI update frames to prevent tearing of UI
-  if (getFrameCount() % 16 == 0) {
-    pd->sprite->updateAndDrawSprites();
-  } else {
-    pd->sprite->drawSprites();
-  }
 
   // Draw FPS indicator (dbg only)
   #ifdef DEV
@@ -111,4 +105,6 @@ void updateRenderList() {
   for (uint32_t i = 0; i < CHUNK_NEIGHBORS_ALL; ++i) {
     chunkAddToRender(currentChunk->m_neighborsALL[i]);
   }
+
+  enemyAddToRender();
 }

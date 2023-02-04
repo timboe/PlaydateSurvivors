@@ -69,8 +69,8 @@ bool doScreenShot(uint32_t* _actionProgress) {
     m_pixRowBytes = 0;
     m_pixData = NULL;
 
-    m_cachePlayerX = getPlayer()->m_pix_x;
-    m_cachePlayerY = getPlayer()->m_pix_y;
+    m_cachePlayerX = getPlayer()->m_x;
+    m_cachePlayerY = getPlayer()->m_y;
 
     m_modeSnap = true;
     m_doSnapshots = true;
@@ -115,8 +115,8 @@ bool doScreenShot(uint32_t* _actionProgress) {
     updateRenderList();
 
     // We're zoomed out here
-    const int16_t drawOffX = -(p->m_pix_x - (DEVICE_PIX_X/2));
-    const int16_t drawOffY = -(p->m_pix_y - (DEVICE_PIX_Y/2));
+    const int16_t drawOffX = -(p->m_x - (DEVICE_PIX_X/2));
+    const int16_t drawOffY = -(p->m_y - (DEVICE_PIX_Y/2));
 
     pd->graphics->setDrawOffset(drawOffX, drawOffY);
     pd->sprite->drawSprites();
