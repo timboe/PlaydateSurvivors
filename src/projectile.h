@@ -32,3 +32,5 @@ void initProjectiles(void);
 void resetProjectiles(void);
 
 void projectileAddToRender(void);
+
+void moveProjectiles(int16_t _x, int16_t _y);

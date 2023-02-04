@@ -8,6 +8,8 @@
 #include "io.h"
 #include "ui.h"
 #include "generate.h"
+#include "projectile.h"
+#include "enemy.h"
 
 struct Player_t m_player;
 
@@ -186,14 +188,22 @@ void movePlayer(bool _forceUpdate) {
   // Don#t need to update position as the code below will pick up on this
   if (m_player.m_x > TOT_WORLD_PIX_X) {
     setPlayerPosition(m_player.m_x - TOT_WORLD_PIX_X, m_player.m_y, /*update current location = */ false);
+    moveEnemies(-TOT_WORLD_PIX_X, 0);
+    moveProjectiles(-TOT_WORLD_PIX_X, 0);
   } else if (m_player.m_x < 0) {
     setPlayerPosition(m_player.m_x + TOT_WORLD_PIX_X, m_player.m_y, /*update current location = */ false);
+    moveEnemies(TOT_WORLD_PIX_X, 0);
+    moveProjectiles(TOT_WORLD_PIX_X, 0);
   }
 
   if (m_player.m_y > TOT_WORLD_PIX_Y) {
     setPlayerPosition(m_player.m_x, m_player.m_y - TOT_WORLD_PIX_Y, /*update current location = */ false);
+    moveEnemies(0, -TOT_WORLD_PIX_Y);
+    moveProjectiles(0, -TOT_WORLD_PIX_Y);
   } else if (m_player.m_y < 0) {
     setPlayerPosition(m_player.m_x, m_player.m_y + TOT_WORLD_PIX_Y, /*update current location = */ false);
+    moveEnemies(0, TOT_WORLD_PIX_Y);
+    moveProjectiles(0, TOT_WORLD_PIX_Y);
   }
 
   // Check chunk change
@@ -219,7 +229,7 @@ SpriteCollisionResponseType playerLCDSpriteCollisionFilterProc(LCDSprite* _playe
 void playerSpriteSetup() {
     m_player.m_sprite = pd->sprite->newSprite();
     PDRect pBound = {.x = 0, .y = 0, .width = TILE_PIX, .height = 18};
-    PDRect cBound = {.x = COFF16, .y = COFF16, .width = TILE_PIX - 2*COFF16, .height = TILE_PIX - 2*COFF16};
+    PDRect cBound = {.x = 2*COFF16, .y = COFF16, .width = TILE_PIX - 4*COFF16, .height = TILE_PIX - 2*COFF16};
     pd->sprite->setBounds(m_player.m_sprite, pBound);
     pd->sprite->setImage(m_player.m_sprite, getSprite36(0, 3), kBitmapUnflipped);
     pd->sprite->setCollideRect(m_player.m_sprite, cBound);

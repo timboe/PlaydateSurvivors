@@ -65,7 +65,7 @@ void newProjectile(enum kProjectileType _type) {
   pd->sprite->setZIndex(p->m_sprite, Z_INDEX_PROJECTILE);
   pd->sprite->setVisible(p->m_sprite, true);
 
-  const float v = 8.0f;
+  const float v = 12.0f;
   const float a = ((rand() % 360) / 360.0f) * 2 * (float)M_PI;
   p->m_vx = v * sinf(a);
   p->m_vy = v * cosf(a); 
@@ -79,11 +79,19 @@ void projectileAddToRender() {
   struct Player_t* p = getPlayer();
   for (uint16_t i = 0; i < MAX_PROJECTILES; ++i) {
     struct Projectile_t* p = projectileManagerGetByIndex(i);
-    if (p->m_type != kNoProjectile) {
-      if (checkBound(p->m_x, p->m_y, 8, 8, p->m_x, p->m_y)) {
-        pd->sprite->addSprite(p->m_sprite);
-      }
+    if (p->m_type == kNoProjectile) continue;
+    if (checkBound(p->m_x, p->m_y, 8, 8, p->m_x, p->m_y)) {
+      pd->sprite->addSprite(p->m_sprite);
     }
+  }
+}
+
+void moveProjectiles(int16_t _x, int16_t _y) {
+  for (uint16_t i = 0; i < MAX_PROJECTILES; ++i) {
+    struct Projectile_t* p = projectileManagerGetByIndex(i);
+    if (p->m_type == kNoProjectile) continue;
+    pd->sprite->moveTo(p->m_sprite, p->m_x + _x, p->m_y + _y);
+    pd->sprite->getPosition(p->m_sprite, &(p->m_x), &(p->m_y));
   }
 }
 

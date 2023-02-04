@@ -39,3 +39,5 @@ void resetEnemies(void);
 void enemyAddToRender(void);
 
 void enemyManagerFreeEnemy(struct Enemy_t* _enemy);
+
+void moveEnemies(int16_t _x, int16_t _y);

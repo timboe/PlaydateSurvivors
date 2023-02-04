@@ -71,7 +71,7 @@ void newEnemy(enum kEnemyType _type) {
   if (!e) return;
 
   pd->sprite->setImage(e->m_sprite, getSprite32(rand() % 9, 21 + rand() % 4), kBitmapUnflipped);
-  e->m_v = 4.0f;
+  e->m_v = 2.0f;
   e->m_health = 16;
 
   pd->sprite->addSprite(e->m_sprite);
@@ -84,11 +84,19 @@ void enemyAddToRender() {
   struct Player_t* p = getPlayer();
   for (uint16_t i = 0; i < MAX_ENEMIES; ++i) {
     struct Enemy_t* e = enemyManagerGetByIndex(i);
-    if (e->m_type != kNoEnemy) {
-      if (checkBound(e->m_x, e->m_y, TILE_PIX/2, TILE_PIX/2, p->m_x, p->m_y)) {
-        pd->sprite->addSprite(e->m_sprite);
-      }
+    if (e->m_type == kNoEnemy) continue;
+    if (checkBound(e->m_x, e->m_y, TILE_PIX/2, TILE_PIX/2, p->m_x, p->m_y)) {
+    pd->sprite->addSprite(e->m_sprite);
     }
+  }
+}
+
+void moveEnemies(int16_t _x, int16_t _y) {
+  for (uint16_t i = 0; i < MAX_ENEMIES; ++i) {
+    struct Enemy_t* e = enemyManagerGetByIndex(i);
+    if (e->m_type == kNoEnemy) continue;
+    pd->sprite->moveTo(e->m_sprite, e->m_x + _x, e->m_y + _y);
+    pd->sprite->getPosition(e->m_sprite, &(e->m_x), &(e->m_y));
   }
 }
 

@@ -58,7 +58,7 @@ int gameLoop(void* _data) {
     if (getFrameCount() % 2 == 0) {
       tickProjectiles();
       // Update UI
-      pd->sprite->updateAndDrawSprites();
+      pd->sprite->drawSprites();
     } else {
       tickEnemies();
       pd->sprite->drawSprites();
