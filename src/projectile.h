@@ -19,6 +19,8 @@ struct Projectile_t{
   float m_x;
   float m_y;
 
+  int16_t m_damage;
+
   int16_t m_index;
 };
 

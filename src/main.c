@@ -6,6 +6,7 @@
 #include "sprite.h"
 #include "generate.h"
 #include "enemy.h"
+#include "projectile.h"
 #include "sound.h"
 #include "location.h"
 #include "chunk.h"
@@ -27,6 +28,7 @@ static void init(void) {
   initSound();
   initGame();
   initEnemies();
+  initProjectiles();
 
   scanSlots();
 

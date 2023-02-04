@@ -48,10 +48,10 @@ void render() {
   #endif
 }
 
-bool checkBound(LCDSprite* _s, uint16_t _hw, uint16_t _hh, int16_t _sX, int16_t _sY) {
-  float x, y;
-  pd->sprite->getPosition(_s, &x, &y);
-  const int16_t x_i = x, y_i = y;
+#define BUFFER (TILE_PIX * 2)
+
+// hw = half width, sx = centre x
+bool checkBound(int16_t _x, int16_t _y, uint16_t _hw, uint16_t _hh, int16_t _sX, int16_t _sY) {
   // pd->system->logToConsole(" -- -- -- sprite is at: %i %i, it has hw, hh:%i %i, x_i, y_i, _hw, _hh);
   // pd->system->logToConsole(" -- -- screen is at: %i %i", _sX, _sY);
   // pd->system->logToConsole(" -- -- bounds are: < %i  ^ %i > %i v %i ", 
@@ -64,11 +64,11 @@ bool checkBound(LCDSprite* _s, uint16_t _hw, uint16_t _hh, int16_t _sX, int16_t 
   // pd->system->logToConsole(" -- veto if y %i <  %i - %s", (y_i + _hh - _sY), -(HALF_DEVICE_PIX_Y), y_i + _hh - _sY < -(HALF_DEVICE_PIX_Y) ? "VETO" : "OK");
   // pd->system->logToConsole(" -- veto if y %i >= %i - %s", (y_i - _hh - _sY), (HALF_DEVICE_PIX_Y),  y_i - _hh - _sY >= (HALF_DEVICE_PIX_Y) ? "VETO" : "OK");
 
-  if (x_i + _hw - _sX < -(HALF_DEVICE_PIX_X)) return false;// { pd->system->logToConsole(" - V0"); return false; }
-  if (x_i - _hw - _sX >= HALF_DEVICE_PIX_X) return false;//{ pd->system->logToConsole(" - V1"); return false; }
+  if (_x + _hw - _sX < -(HALF_DEVICE_PIX_X + BUFFER)) return false;// { pd->system->logToConsole(" - V0"); return false; }
+  if (_x - _hw - _sX >= HALF_DEVICE_PIX_X + BUFFER) return false;//{ pd->system->logToConsole(" - V1"); return false; }
   //
-  if (y_i + _hh - _sY < -(HALF_DEVICE_PIX_Y)) return false;//{ pd->system->logToConsole(" - V2"); return false; }
-  if (y_i - _hh - _sY >= HALF_DEVICE_PIX_Y) return false;//{ pd->system->logToConsole(" - V3"); return false; }
+  if (_y + _hh - _sY < -(HALF_DEVICE_PIX_Y + BUFFER)) return false;//{ pd->system->logToConsole(" - V2"); return false; }
+  if (_y - _hh - _sY >= HALF_DEVICE_PIX_Y + BUFFER) return false;//{ pd->system->logToConsole(" - V3"); return false; }
   //pd->system->logToConsole(" - OK");
   return true;
 }
@@ -93,14 +93,17 @@ void updateRenderList() {
   struct Chunk_t* currentChunk = getCurrentChunk();
   pd->sprite->removeAllSprites();
 
-  struct Player_t* player = getPlayer();
-  pd->sprite->addSprite(player->m_sprite);
-
   const enum kSaveLoadRequest io = currentIOAction();
-
   if (io != kDoScreenShot) {
     addUIToSpriteList();
   }
+
+  if (getGameMode() == kTitles) return;
+
+  struct Player_t* player = getPlayer();
+  pd->sprite->addSprite(player->m_sprite);
+
+
 
   chunkAddToRender(currentChunk);
   for (uint32_t i = 0; i < CHUNK_NEIGHBORS_ALL; ++i) {

@@ -39,7 +39,7 @@ uint16_t pixToLoc(uint16_t _pix) {
 
 int gameLoop(void* _data) {
   ++m_frameCount;
-  pd->graphics->setBackgroundColor(kColorBlack);
+  pd->graphics->setBackgroundColor(kColorWhite);
 
   if (IOOperationInProgress()) { 
     pd->sprite->removeAllSprites();
@@ -66,12 +66,17 @@ int gameLoop(void* _data) {
 
   }
 
-  if(m_frameCount % 16 == 0) {
+  if(m_frameCount % 8 == 0) {
     updateRenderList();
   }
 
-  if (gm == kTitles) updateUITitles(m_frameCount);
-  else updateUI(m_frameCount);
+  if (gm == kTitles) {
+    updateUITitles(m_frameCount);
+    pd->sprite->updateAndDrawSprites();
+  } else { 
+    updateUI(m_frameCount);
+  }
+
 
   render();
 
@@ -94,6 +99,7 @@ void reset(bool _resetThePlayer) {
   resetChunk();
   resetWorld();
   resetEnemies();
+  resetProjectiles();
   if (_resetThePlayer) {
     resetPlayer();
     resetUI();
@@ -107,7 +113,7 @@ void populateMenuTitle() {
 
 void populateMenuGame() {
   pd->system->removeAllMenuItems();
-  pd->system->addMenuItem("menu", menuOptionsCallbackMenu, NULL);
+  //pd->system->addMenuItem("menu", menuOptionsCallbackMenu, NULL);
 }
 
 void initGame() {

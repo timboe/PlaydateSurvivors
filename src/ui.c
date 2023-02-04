@@ -46,7 +46,7 @@ void addSaveLoadProgressSprite(int32_t _doneX, int32_t _ofY) {
   int32_t width = pd->graphics->getTextWidth(getRoobert10(), text, 128, kASCIIEncoding, 0);
   pd->graphics->clearBitmap(m_UIBitmapSaveLoadProgress, kColorClear);
   pd->graphics->pushContext(m_UIBitmapSaveLoadProgress);
-  pd->graphics->setDrawMode(kDrawModeFillWhite);
+  pd->graphics->setDrawMode(kDrawModeFillBlack);
   pd->graphics->drawText(text, 128, kASCIIEncoding, (HTILE_PIX*6-width)/2, 0);
   pd->graphics->popContext();
   pd->sprite->addSprite(m_UISpriteSaveLoadProgress);
@@ -83,24 +83,12 @@ uint16_t getTitleCursorSelected() {
 
 void updateUITitles(int _fc) {
   pd->sprite->setDrawMode(m_UISpriteSplash, kDrawModeCopy);
-  #ifdef TITLE_LOGO_ONLY
-  pd->sprite->setVisible(m_UISpriteSplash, 1);
-  const int32_t o = 0;//round( HTILE_PIX/2 * fabs( sin( 0.1f * _fc ) ) );
-  pd->sprite->moveTo(m_UISpriteSplash, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 - o - HTILE_PIX );
-  pd->sprite->setVisible(m_UISpriteTitleSelected, 0);
-  for (int32_t i = 0; i < 3; ++i) {
-    pd->sprite->setVisible(m_UISpriteTitleNew[i], 0);
-    pd->sprite->setVisible(m_UISpriteTitleCont[i], 0);
-  }
-  return;
-  #endif
 
   pd->sprite->setVisible(m_UISpriteTitleSelected, _fc % (TICK_FREQUENCY/2) < TICK_FREQUENCY/4);
   pd->sprite->moveTo(m_UISpriteTitleSelected, 
-    m_UITitleSelected*HTILE_PIX*7 + (7*HTILE_PIX)/2 + (m_UITitleSelected+1)*HTILE_PIX, 
+    DEVICE_PIX_X/2, 
     DEVICE_PIX_Y - HTILE_PIX*2);
-  const int32_t offset = 0;//round( HTILE_PIX/2 * fabs( sin( 0.1f * _fc ) ) );
-  pd->sprite->moveTo(m_UISpriteSplash, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 - offset - (3*HTILE_PIX)/4 );
+  pd->sprite->moveTo(m_UISpriteSplash, DEVICE_PIX_X/2, DEVICE_PIX_Y/2 - (3*HTILE_PIX)/4 );
 }
 
 void updateUI(int _fc) {
@@ -109,10 +97,6 @@ void updateUI(int _fc) {
 
 
 void addUIToSpriteList() {
-  #ifdef TITLE_LOGO_ONLY
-  pd->sprite->addSprite(m_UISpriteSplash);
-  return;
-  #endif
 
   struct Player_t* p = getPlayer();
 
@@ -210,8 +194,8 @@ void initiUI() {
 
   pd->graphics->pushContext(m_UIBitmapGen);
   pd->graphics->setLineCapStyle(kLineCapStyleRound);
-  pd->graphics->drawLine(HTILE_PIX, HTILE_PIX, DEVICE_PIX_X/2 - HTILE_PIX, HTILE_PIX, HTILE_PIX*2, kColorWhite);
-  pd->graphics->setDrawMode(kDrawModeFillBlack);
+  pd->graphics->drawLine(HTILE_PIX, HTILE_PIX, DEVICE_PIX_X/2 - HTILE_PIX, HTILE_PIX, HTILE_PIX*2, kColorBlack);
+  pd->graphics->setDrawMode(kDrawModeFillWhite);
   setRoobert24();
   tlen = pd->graphics->getTextWidth(getRoobert24(), "GENERATING", 16, kASCIIEncoding, 0);
   pd->graphics->drawText("GENERATING", 16, kASCIIEncoding, (DEVICE_PIX_X/2 - tlen)/2, 0);

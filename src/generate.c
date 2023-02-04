@@ -141,7 +141,7 @@ void renderChunkBackgroundImage(struct Chunk_t* _chunk) {
   }
 
   #ifdef DEV
-  if (true && getGameMode() != kTitles) {
+  if (true) {
     setRoobert24();
     pd->graphics->drawRect(0, 0, CHUNK_PIX_X, CHUNK_PIX_Y, kColorBlack);
     static char text[16];
