@@ -23,6 +23,9 @@ LCDBitmap* getSpriteSplash(void);
 
 LCDBitmap* getTitleSelectedBitmap(void);
 
+LCDBitmap* getProjectileBitmap(void);
+
+
 // Short-form versions too
 #define SID(X, Y) ((SHEET32_SIZE_X * Y) + X)
 #define SPRITE32_ID(X, Y) ((SHEET32_SIZE_X * Y) + X)

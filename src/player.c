@@ -206,7 +206,7 @@ SpriteCollisionResponseType playerLCDSpriteCollisionFilterProc(LCDSprite* _playe
 void playerSpriteSetup() {
     m_player.m_sprite = pd->sprite->newSprite();
     PDRect pBound = {.x = 0, .y = 0, .width = TILE_PIX, .height = 18};
-    PDRect cBound = {.x = (COLLISION_OFFSET_SMALL/2), .y = (COLLISION_OFFSET_SMALL/2), .width = (TILE_PIX - COLLISION_OFFSET_SMALL), .height = (TILE_PIX - COLLISION_OFFSET_SMALL)};
+    PDRect cBound = {.x = COFF16, .y = COFF16, .width = TILE_PIX - 2*COFF16, .height = TILE_PIX - 2*COFF16};
     pd->sprite->setBounds(m_player.m_sprite, pBound);
     pd->sprite->setImage(m_player.m_sprite, getSprite36(0, 3), kBitmapUnflipped);
     pd->sprite->setCollideRect(m_player.m_sprite, cBound);

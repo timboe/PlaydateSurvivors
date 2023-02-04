@@ -8,6 +8,7 @@
 #include "input.h"
 #include "ui.h"
 #include "enemy.h"
+#include "projectile.h"
 
 float m_trauma = 0.0f, m_decay = 0.0f;
 
@@ -107,4 +108,5 @@ void updateRenderList() {
   }
 
   enemyAddToRender();
+  projectileAddToRender();
 }

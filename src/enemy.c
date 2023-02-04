@@ -97,6 +97,8 @@ void tickEnemies() {
     if (e->m_type == kNoEnemy) continue;
 
     pd->sprite->getPosition(e->m_sprite, &(e->m_x), &(e->m_y));
+    pd->sprite->setDrawMode(e->m_sprite, kDrawModeCopy);
+
 
     float a = atan2f(p->m_x - e->m_x, p->m_y - e->m_y);
 

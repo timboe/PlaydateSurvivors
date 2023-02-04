@@ -11,6 +11,7 @@
 #include "ui.h"
 #include "io.h"
 #include "enemy.h"
+#include "projectile.h"
 
 PlaydateAPI* pd = NULL;
 
@@ -55,7 +56,7 @@ int gameLoop(void* _data) {
     movePlayer(/*forceUpdate*/ false);
 
     if (getFrameCount() % 2 == 0) {
-      //doWeapons();
+      tickProjectiles();
       // Update UI
       pd->sprite->updateAndDrawSprites();
     } else {
@@ -65,7 +66,7 @@ int gameLoop(void* _data) {
 
   }
 
-  if(m_frameCount % 8 == 0) {
+  if(m_frameCount % 16 == 0) {
     updateRenderList();
   }
 

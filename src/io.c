@@ -133,7 +133,6 @@ void enactIO() {
       updateRenderList();
       resumeMusic();
       resetMomentum();
-      setPlayerVisible(true);
     }
   }
 }
@@ -168,6 +167,7 @@ bool doTitle() {
 
   populateMenuTitle();
   updateMusic(/*isTitle=*/true);
+  setPlayerVisible(false);
 
   return true;
 }
@@ -203,6 +203,7 @@ bool doNewWorld() {
 
     setDefaultPlayerSettings();
     forceTorus();
+    setPlayerVisible(true);
 
     // Finished
     return true;

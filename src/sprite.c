@@ -9,6 +9,8 @@ LCDBitmap* m_titleSelected;
 
 LCDBitmap* m_splash;
 
+LCDBitmap* m_projectile;
+
 LCDFont* m_fontRoobert24;
 
 LCDFont* m_fontRoobert10;
@@ -87,12 +89,17 @@ LCDFont* getRoobert10(void) {
   return m_fontRoobert10;
 }
 
+LCDBitmap* getProjectileBitmap() {
+  return m_projectile;
+}
+
 void initSprite() {
   pd->graphics->setDrawMode(kDrawModeCopy);
   m_sheet32 = loadImageTableAtPath("images/sheet32");
   m_sheet36 = loadImageTableAtPath("images/sheet36");
   m_titleSelected = loadImageAtPath("images/titleSelected");
   m_splash = loadImageAtPath("images/splash");
+  m_projectile = loadImageAtPath("images/projectile");
 
   m_fontRoobert24 = loadFontAtPath("fonts/Roobert-24-Medium");
   m_fontRoobert10 = loadFontAtPath("fonts/Roobert-10-Bold");

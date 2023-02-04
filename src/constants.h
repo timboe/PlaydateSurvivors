@@ -84,6 +84,7 @@
 
 #define Z_INDEX_BACKGROUND -1
 #define Z_INDEX_PLAYER 16000
+#define Z_INDEX_PROJECTILE 15000
 
 #define FLAG_PLAYER 0
 #define FLAG_ENEMY 1
@@ -91,7 +92,7 @@
 
 // Shrink the collision boxes from the edge of the sprite, feels better
 #define COFF32 4
-#define COLLISION_OFFSET_SMALL (TILE_PIX/2 + 2)
+#define COFF16 2
 
 #define N_MUSIC_TRACKS 5
 
@@ -104,3 +105,4 @@
 #define FLOOR_VARIETIES 8
 
 #define MAX_ENEMIES 128
+#define MAX_PROJECTILES 128
